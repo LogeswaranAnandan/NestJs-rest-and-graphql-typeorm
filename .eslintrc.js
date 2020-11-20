@@ -4,7 +4,7 @@ module.exports = {
     project: 'tsconfig.json',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  plugins: ['@typescript-eslint/eslint-plugin', 'prettier'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
@@ -23,7 +23,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'warn',
     '@typescript-eslint/naming-convention': 'warn',
     '@typescript-eslint/no-inferrable-types': 'warn',
-    '@typescript-eslint/no-unnecessary-condition': 'warn',
-    '@typescript-eslint/space-before-function-paren': 'warn',
+    '@typescript-eslint/no-unnecessary-condition': 'on',
+    '@typescript-eslint/space-before-function-paren': 'off',
   },
 };

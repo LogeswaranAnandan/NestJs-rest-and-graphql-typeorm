@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
 import { Task } from '../entities/task.entity';
+import { TaskStatusValidationPipe } from '../pipes/task-status.pipe';
 import { TaskRequestDto } from './dto/task-request.dto';
-import { TaskStatusValidationPipe } from './pipes/task-status.pipe';
 import { TasksService } from './tasks.service';
 
+// @UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
