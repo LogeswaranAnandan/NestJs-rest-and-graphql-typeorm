@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  Logger,
+  LoggerService,
+  Inject,
+} from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -11,11 +23,17 @@ import { TasksService } from './tasks.service';
 @UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TasksController {
-  constructor(private tasksService: TasksService) {}
+  private _logger: LoggerService = new Logger(TasksController.name);
+  constructor(private _tasksService: TasksService) {}
 
   @Get()
   async getAllTasks(@CurrentUser() currentUser: User): Promise<Task[]> {
-    return await this.tasksService.getAllTasks(currentUser);
+    this._logger.debug(
+      `Entering :: getAllTasks :: ${JSON.stringify(currentUser)}`,
+    );
+    const tasks: Task[] = await this._tasksService.getAllTasks(currentUser);
+    this._logger.debug(`Exiting :: getAllTasks :: ${JSON.stringify(tasks)}`);
+    return tasks;
   }
 
   @Get('/:id')
@@ -23,7 +41,7 @@ export class TasksController {
     @Param('id') id: number,
     @CurrentUser() currentUser: User,
   ): Promise<Task> {
-    return await this.tasksService.getTaskById(id, currentUser);
+    return await this._tasksService.getTaskById(id, currentUser);
   }
 
   @Post()
@@ -31,7 +49,7 @@ export class TasksController {
     @Body() taskRequestDto: TaskRequestDto,
     @CurrentUser() user: User,
   ): Promise<Task> {
-    return await this.tasksService.createTask(taskRequestDto, user);
+    return await this._tasksService.createTask(taskRequestDto, user);
   }
 
   @Put('/:id')
@@ -40,7 +58,7 @@ export class TasksController {
     @Body(TaskStatusValidationPipe) task: Task,
     @CurrentUser() user: User,
   ): Promise<Task> {
-    return await this.tasksService.updateTask(id, task, user);
+    return await this._tasksService.updateTask(id, task, user);
   }
 
   @Delete('/:id')
@@ -48,6 +66,6 @@ export class TasksController {
     @Param('id') id: number,
     @CurrentUser() user: User,
   ): Promise<void> {
-    return await this.tasksService.deleteTask(id, user);
+    return await this._tasksService.deleteTask(id, user);
   }
 }
