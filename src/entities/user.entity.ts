@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Task } from './task.entity';
 
 @Entity()
 export class User {
@@ -14,7 +16,10 @@ export class User {
   @Column()
   salt: string;
 
-  constructor(username: string, password: string, salt: string) {
+  @OneToMany((type) => Task, (task) => task.user)
+  tasks: Task[];
+
+  constructor(username?: string, password?: string, salt?: string) {
     this.username = username;
     this.password = password;
     this.salt = salt;

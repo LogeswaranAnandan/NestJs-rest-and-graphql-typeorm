@@ -14,7 +14,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
       secret: MOCK_ENV.secret,
       signOptions: {
-        expiresIn: 86400, // 1-day
+        expiresIn: 864000000,
       },
     }),
     UsersModule,

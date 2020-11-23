@@ -1,40 +1,53 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Task } from '../entities/task.entity';
+import { User } from '../entities/user.entity';
 import { TaskStatusValidationPipe } from '../pipes/task-status.pipe';
 import { TaskRequestDto } from './dto/task-request.dto';
 import { TasksService } from './tasks.service';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  async getAllTasks(): Promise<Task[]> {
-    return await this.tasksService.getAllTasks();
+  async getAllTasks(@CurrentUser() currentUser: User): Promise<Task[]> {
+    return await this.tasksService.getAllTasks(currentUser);
   }
 
   @Get('/:id')
-  async getTaskById(@Param('id') id: number): Promise<Task> {
-    return await this.tasksService.getTaskById(id);
+  async getTaskById(
+    @Param('id') id: number,
+    @CurrentUser() currentUser: User,
+  ): Promise<Task> {
+    return await this.tasksService.getTaskById(id, currentUser);
   }
 
   @Post()
-  async createTask(@Body() task: TaskRequestDto): Promise<Task> {
-    return await this.tasksService.createTask(task);
+  async createTask(
+    @Body() taskRequestDto: TaskRequestDto,
+    @CurrentUser() user: User,
+  ): Promise<Task> {
+    return await this.tasksService.createTask(taskRequestDto, user);
   }
 
   @Put('/:id')
   async updateTask(
     @Param('id') id: number,
     @Body(TaskStatusValidationPipe) task: Task,
+    @CurrentUser() user: User,
   ): Promise<Task> {
-    return await this.tasksService.updateTask(id, task);
+    return await this.tasksService.updateTask(id, task, user);
   }
 
   @Delete('/:id')
-  async deleteTask(@Param('id') id: number): Promise<void> {
-    return await this.tasksService.deleteTask(id);
+  async deleteTask(
+    @Param('id') id: number,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    return await this.tasksService.deleteTask(id, user);
   }
 }
