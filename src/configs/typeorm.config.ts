@@ -1,15 +1,19 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { LoggerOptions } from 'typeorm';
 
-export const typeormConfig: TypeOrmModuleOptions = {
-  type: 'postgres',
-  database: 'taskmanagement',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'postgres',
-  // The .js file is included as it is finally compiled to javascript.
-  entities: [__dirname + '/../**/*.entity.js'],
-  logging: 'all',
-  synchronize: true,
-  retryAttempts: 1,
+export const getTypeOrmConfig = () => {
+  const typeormConfig: TypeOrmModuleOptions = {
+    type: 'postgres',
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    // The .js file is included as it is finally compiled to javascript.
+    entities: [__dirname + '/../**/*.entity.js'],
+    // logging: process.env.TYPEORM_LOG_LEVEL as LoggerOptions,
+    synchronize: true,
+  };
+
+  return typeormConfig;
 };
