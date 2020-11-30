@@ -1,0 +1,30 @@
+type Task {
+  id: ID!
+  title: String
+  description: String
+  status: TaskStatus
+  user: User
+}
+
+input TaskRequestDto {
+  title: String
+  description: String
+  status: TaskStatus
+}
+
+enum TaskStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+}
+
+type Query {
+  tasks: [Task]!
+  task(id: Int!): Task!
+}
+
+type Mutation {
+  createTask(taskRequestDto: TaskRequestDto!): Task!
+  updateTask(id: Int!, taskRequestDto: TaskRequestDto!): Task!
+  deleteTask(id: Int!): Int!
+}

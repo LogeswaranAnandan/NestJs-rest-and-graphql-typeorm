@@ -41,7 +41,7 @@ export class TasksService {
 
   async updateTask(
     id: number,
-    { title, description, status }: Task,
+    { title, description, status }: TaskRequestDto,
     user: User,
   ): Promise<Task> {
     const existingTask: Task = await this.getTaskById(id, user);
@@ -56,8 +56,9 @@ export class TasksService {
     return updatedTask;
   }
 
-  async deleteTask(id: number, user: User): Promise<void> {
+  async deleteTask(id: number, user: User): Promise<number> {
     const existingTask: Task = await this.getTaskById(id, user);
     this._taskRepository.delete(existingTask.id);
+    return id;
   }
 }

@@ -47,7 +47,7 @@ export class TasksController {
   async deleteTask(
     @Param('id') id: number,
     @CurrentUser() user: User,
-  ): Promise<void> {
+  ): Promise<number> {
     return await this.tasksService.deleteTask(id, user);
   }
 }

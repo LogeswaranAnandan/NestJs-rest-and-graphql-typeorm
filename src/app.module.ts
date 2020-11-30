@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
@@ -26,6 +27,16 @@ const getEnvFilePath = (): string => {
   imports: [
     ConfigModule.forRoot({
       envFilePath: getEnvFilePath(),
+    }),
+    GraphQLModule.forRoot({
+      typePaths: ['./src/**/*.graphql'],
+      context: ({ req }) => {
+        const contextObj = {
+          req,
+        };
+
+        return contextObj;
+      },
     }),
     TypeOrmModule.forRoot(getTypeOrmConfig()),
     TasksModule,

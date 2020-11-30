@@ -1,0 +1,7 @@
+type User {
+  id: ID!
+  username: String
+  password: String
+  salt: String
+  tasks: [Task]
+}
