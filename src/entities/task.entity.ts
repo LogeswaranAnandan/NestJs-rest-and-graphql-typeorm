@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 
 import { TaskStatus } from '../tasks/models/task-status.enum';
 import { User } from './user.entity';
@@ -19,6 +19,9 @@ export class Task {
 
   @ManyToOne((type) => User, (user) => user.tasks)
   user: User;
+
+  @RelationId((task: Task) => task.user)
+  userId: number;
 
   constructor(
     title?: string,

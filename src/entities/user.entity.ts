@@ -10,10 +10,10 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
-  @Column()
+  @Column({ select: false })
   salt: string;
 
   @OneToMany((type) => Task, (task) => task.user)

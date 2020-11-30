@@ -1,18 +1,22 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Task } from 'src/entities/task.entity';
 import { User } from 'src/entities/user.entity';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { TaskStatusValidationPipe } from '../pipes/task-status.pipe';
+import { UsersService } from '../users/users.service';
 import { TaskRequestDto } from './dto/task-request.dto';
 import { TasksService } from './tasks.service';
 
 @UseGuards(JwtAuthGuard)
-@Resolver('Tasks')
+@Resolver('Task')
 export class TasksResolver {
-  constructor(private _tasksService: TasksService) {}
+  constructor(
+    private _tasksService: TasksService,
+    private _usersService: UsersService,
+  ) {}
   @Query('tasks')
   async getAllTasks(@CurrentUser() currentUser: User): Promise<Task[]> {
     return await this._tasksService.getAllTasks(currentUser);
@@ -50,5 +54,10 @@ export class TasksResolver {
     @CurrentUser() user: User,
   ): Promise<number> {
     return await this._tasksService.deleteTask(id, user);
+  }
+
+  @ResolveField('user')
+  async resolveUserField(@Parent() { userId }: Task) {
+    return this._usersService.getUserById(userId);
   }
 }

@@ -11,7 +11,14 @@ export const getTypeOrmConfig = () => {
     password: process.env.DB_PASSWORD,
     // The .js file is included as it is finally compiled to javascript.
     entities: [__dirname + '/../**/*.entity.js'],
-    // logging: process.env.TYPEORM_LOG_LEVEL as LoggerOptions,
+    logging: [
+      'query',
+      'error',
+      'warn',
+      'info',
+      'log',
+      'migration',
+    ] as LoggerOptions,
     synchronize: true,
   };
 

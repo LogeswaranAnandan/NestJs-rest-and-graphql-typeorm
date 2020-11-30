@@ -11,14 +11,19 @@ export class TasksService {
 
   async getAllTasks(currentuser: User): Promise<Task[]> {
     return await this._taskRepository.find({
-      user: { id: currentuser.id },
+      where: {
+        user: { id: currentuser.id },
+      },
+      relations: ['user'],
     });
   }
 
   async getTaskById(id: number, currentUser: User): Promise<Task> {
     const task: Task = await this._taskRepository.findOne({
-      id: id,
-      user: { id: currentUser.id },
+      where: {
+        id: id,
+        user: { id: currentUser.id },
+      },
     });
     if (task) {
       return task;
