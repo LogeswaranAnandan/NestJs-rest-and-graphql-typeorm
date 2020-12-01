@@ -8,9 +8,7 @@ export class UsersService {
   constructor(private _userRepository: UserRepository) {}
 
   async getUserById(id: number): Promise<User> {
-    const user = await this._userRepository.findOne(id);
-    console.log('user ::', user);
-    return user;
+    return await this._userRepository.findOne(id);
   }
 
   async getUserByUsername(username: string): Promise<User> {

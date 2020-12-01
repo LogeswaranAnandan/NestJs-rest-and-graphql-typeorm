@@ -1,0 +1,13 @@
+input AuthModel {
+  username: String!
+  password: String!
+}
+
+type SignInResponse {
+  jwtToken: String!
+}
+
+type Mutation {
+  signUp(authModel: AuthModel!): User!
+  signIn(authModel: AuthModel!): SignInResponse!
+}

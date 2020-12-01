@@ -1,5 +1,4 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { LoggerOptions } from 'typeorm';
 
 export const getTypeOrmConfig = () => {
   const typeormConfig: TypeOrmModuleOptions = {
@@ -12,14 +11,7 @@ export const getTypeOrmConfig = () => {
     // url: 'mongodb://localhost:27017/?readPreference=primary&ssl=false',
     // The .js file is included as it is finally compiled to javascript.
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-    logging: [
-      'query',
-      'error',
-      'warn',
-      'info',
-      'log',
-      'migration',
-    ] as LoggerOptions,
+    logging: true,
     synchronize: true,
     useUnifiedTopology: true,
   };

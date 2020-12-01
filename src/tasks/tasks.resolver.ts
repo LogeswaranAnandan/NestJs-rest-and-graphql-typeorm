@@ -24,7 +24,7 @@ export class TasksResolver {
 
   @Query('task')
   async getTaskById(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @CurrentUser() currentUser: User,
   ): Promise<Task> {
     return await this._tasksService.getTaskById(id, currentUser);
@@ -40,7 +40,7 @@ export class TasksResolver {
 
   @Mutation('updateTask')
   async updateTask(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('taskRequestDto', TaskStatusValidationPipe)
     taskRequestDto: TaskRequestDto,
     @CurrentUser() user: User,
@@ -50,9 +50,9 @@ export class TasksResolver {
 
   @Mutation('deleteTask')
   async deleteTask(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @CurrentUser() user: User,
-  ): Promise<number> {
+  ): Promise<string> {
     return await this._tasksService.deleteTask(id, user);
   }
 

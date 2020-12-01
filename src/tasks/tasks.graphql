@@ -20,11 +20,11 @@ enum TaskStatus {
 
 type Query {
   tasks: [Task]!
-  task(id: Int!): Task!
+  task(id: String!): Task!
 }
 
 type Mutation {
   createTask(taskRequestDto: TaskRequestDto!): Task!
-  updateTask(id: Int!, taskRequestDto: TaskRequestDto!): Task!
-  deleteTask(id: Int!): Int!
+  updateTask(id: String!, taskRequestDto: TaskRequestDto!): Task!
+  deleteTask(id: String!): String!
 }

@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ObjectID } from 'mongodb';
 
 import { Task } from '../entities/task.entity';
 import { User } from '../entities/user.entity';
@@ -17,10 +18,10 @@ export class TasksService {
     });
   }
 
-  async getTaskById(id: number, currentUser: User): Promise<Task> {
+  async getTaskById(id: string, currentUser: User): Promise<Task> {
     const task: Task = await this._taskRepository.findOne({
       where: {
-        id: id,
+        _id: new ObjectID(id),
         _userId: currentUser.id,
       },
     });
@@ -43,7 +44,7 @@ export class TasksService {
   }
 
   async updateTask(
-    id: number,
+    id: string,
     { title, description, status }: TaskRequestDto,
     user: User,
   ): Promise<Task> {
@@ -59,9 +60,9 @@ export class TasksService {
     return updatedTask;
   }
 
-  async deleteTask(id: number, user: User): Promise<number> {
+  async deleteTask(id: string, user: User): Promise<string> {
     const existingTask: Task = await this.getTaskById(id, user);
-    this._taskRepository.delete(existingTask.id);
+    await this._taskRepository.delete(existingTask.id);
     return id;
   }
 }
