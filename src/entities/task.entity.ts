@@ -1,12 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
+import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 import { TaskStatus } from '../tasks/models/task-status.enum';
 import { User } from './user.entity';
 
 @Entity()
 export class Task {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @ObjectIdColumn()
+  id: ObjectID;
 
   @Column()
   title: string;
@@ -17,11 +17,8 @@ export class Task {
   @Column()
   status: TaskStatus;
 
-  @ManyToOne((type) => User, (user) => user.tasks)
-  user: User;
-
-  @RelationId((task: Task) => task.user)
-  userId: number;
+  @Column()
+  _userId: number;
 
   constructor(
     title?: string,
@@ -32,6 +29,6 @@ export class Task {
     this.title = title;
     this.description = description;
     this.status = status || TaskStatus.OPEN;
-    this.user = user || new User();
+    // this.user = user || new User();
   }
 }

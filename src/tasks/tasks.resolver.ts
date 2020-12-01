@@ -57,7 +57,7 @@ export class TasksResolver {
   }
 
   @ResolveField('user')
-  async resolveUserField(@Parent() { userId }: Task) {
-    return this._usersService.getUserById(userId);
+  async resolveUserField(@Parent() { _userId }: Task) {
+    return this._usersService.getUserById(_userId);
   }
 }

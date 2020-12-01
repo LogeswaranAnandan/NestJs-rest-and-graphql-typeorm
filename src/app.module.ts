@@ -34,7 +34,6 @@ const getEnvFilePath = (): string => {
         const contextObj = {
           req,
         };
-
         return contextObj;
       },
     }),

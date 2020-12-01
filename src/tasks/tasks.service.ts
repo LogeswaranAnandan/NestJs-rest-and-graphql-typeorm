@@ -12,9 +12,8 @@ export class TasksService {
   async getAllTasks(currentuser: User): Promise<Task[]> {
     return await this._taskRepository.find({
       where: {
-        user: { id: currentuser.id },
+        _userId: currentuser.id,
       },
-      relations: ['user'],
     });
   }
 
@@ -22,7 +21,7 @@ export class TasksService {
     const task: Task = await this._taskRepository.findOne({
       where: {
         id: id,
-        user: { id: currentUser.id },
+        _userId: currentUser.id,
       },
     });
     if (task) {
@@ -36,9 +35,8 @@ export class TasksService {
     { title, description }: TaskRequestDto,
     user: User,
   ): Promise<Task> {
-    console.log('user :: ', user);
     const task: Task = new Task(title, description);
-    task.user.id = user.id;
+    task._userId = user.id;
     const createdTask: Task = await this._taskRepository.save(task);
 
     return createdTask;
